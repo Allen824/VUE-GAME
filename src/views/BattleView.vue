@@ -15,112 +15,93 @@
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth > 0">{{this.$store.state.myPokemon.firstOne.currentHealth}} / {{this.$store.state.myPokemon.firstOne.health}} Health</span>
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth <= 0">DEAD</span>
       </div>
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/241.png">
+      <div><span class="boostBar" v-show="this.$store.state.myPokemon.currentBoost.boost > 0">+{{this.$store.state.myPokemon.currentBoost.boost}} Damage</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/241.png"></div>
     </div>
 
   </div>
   <div class="desc" Id="desc">
     <span v-if="this.$store.state.display.currentMove == ''">Battle Log...</span>
-    {{this.$store.state.display.currentMove}} {{this.$store.state.display.onScreen}}
-  </div>
+    <div>{{this.$store.state.display.currentMove}} {{this.$store.state.display.onScreen}}</div>
+    <!--<button class="battleLog" v-on:click="this.$router.push('/BattleLog')"> View Full Battle Log</button>-->
+  </div> 
+
   <div class="moveSet">
-    <button :class="this.$store.state.myMoves.firstMove.type" v-on:mouseover="hover1 = true" v-on:mouseleave="hover1 = false" 
-    v-on:click="setDisplay(this.$store.state.myMoves.firstMove.power, this.$store.state.myMoves.firstMove.boost, this.$store.state.myMoves.firstMove.healing, 
-    this.$store.state.myMoves.firstMove.criticalChance, this.$store.state.myMoves.firstMove.name)">
-      <div>{{this.$store.state.myMoves.firstMove.name}}</div>
-      <span v-if="hover1 && this.$store.state.myMoves.firstMove.power > 0">Damage: {{this.$store.state.myMoves.firstMove.power}}
+    <button v-for="move in myMoves" :key="move.id" v-on:mouseover="hover = true" v-on:mouseout="hover = false"
+    :class="move.type" v-on:click="setDisplay(move.power, move.boost, move.healing, move.criticalChance, move.name)">
+      <div>{{move.name}}</div>
+      <span v-if="move.power > 0" v-show="hover == true">Damage: {{move.power}}
       <span v-if="this.$store.state.myPokemon.currentBoost.boost > 0">(+{{this.$store.state.myPokemon.currentBoost.boost}} boost)</span></span>
-      <span v-if="hover1 && this.$store.state.myMoves.firstMove.boost > 0">Boost: +{{this.$store.state.myMoves.firstMove.boost}} Damage</span>
-      <span v-if="hover1 && this.$store.state.myMoves.firstMove.healing > 0">Healing: +{{this.$store.state.myMoves.firstMove.healing}}</span>
-      <span v-if="hover1 && this.$store.state.myMoves.firstMove.critical">({{this.$store.state.myMoves.firstMove.criticalChance}}% to do x2)</span>
+      <span v-if="move.boost > 0" v-show="hover == true">Boost: +{{move.boost}} damage</span>
+      <span v-if="move.healing > 0" v-show="hover == true">Healing: +{{move.healing}} health</span>
+      <span v-if="move.criticalChance > 0" v-show="hover == true">({{move.criticalChance}}% chance to do x2)</span> 
     </button>
-    <button :class="this.$store.state.myMoves.secondMove.type" v-on:mouseover="hover2 = true" v-on:mouseleave="hover2 = false"
-    v-on:click="setDisplay(this.$store.state.myMoves.secondMove.power, this.$store.state.myMoves.secondMove.boost, this.$store.state.myMoves.secondMove.healing, 
-    this.$store.state.myMoves.secondMove.criticalChance, this.$store.state.myMoves.secondMove.name)">
-        <div>{{this.$store.state.myMoves.secondMove.name}}</div>
-        <span v-if="hover2 && this.$store.state.myMoves.secondMove.power > 0">Damage: {{this.$store.state.myMoves.secondMove.power}}
-        <span v-if="this.$store.state.myPokemon.currentBoost.boost > 0">(+{{this.$store.state.myPokemon.currentBoost.boost}} boost)</span></span>
-        <span v-if="hover2 && this.$store.state.myMoves.secondMove.boost > 0">Boost: +{{this.$store.state.myMoves.secondMove.boost}} Damage</span>
-        <span v-if="hover4 && this.$store.state.myMoves.secondMove.healing > 0">Healing: +{{this.$store.state.myMoves.secondMove.healing}}</span>
-        <span v-if="hover2 && this.$store.state.myMoves.secondMove.critical">({{this.$store.state.myMoves.secondMove.criticalChance}}% to do x2)</span>
-     </button>
-     <button :class="this.$store.state.myMoves.thirdMove.type" v-on:mouseover="hover3 = true" v-on:mouseleave="hover3 = false"
-     v-on:click="setDisplay(this.$store.state.myMoves.thirdMove.power, this.$store.state.myMoves.thirdMove.boost, this.$store.state.myMoves.thirdMove.healing, 
-     this.$store.state.myMoves.thirdMove.criticalChance, this.$store.state.myMoves.thirdMove.name)">
-      <div >{{this.$store.state.myMoves.thirdMove.name}}</div>
-      <span v-if="hover3 && this.$store.state.myMoves.thirdMove.power > 0">Damage: {{this.$store.state.myMoves.thirdMove.power}}
-      <span v-if="this.$store.state.myPokemon.currentBoost.boost > 0">(+{{this.$store.state.myPokemon.currentBoost.boost}} boost)</span></span>
-      <span v-if="hover3 && this.$store.state.myMoves.thirdMove.boost > 0">Boost: +{{this.$store.state.myMoves.thirdMove.boost}} Damage</span>
-      <span v-if="hover4 && this.$store.state.myMoves.thirdMove.healing > 0">Healing: +{{this.$store.state.myMoves.thirdMove.healing}}</span>
-      <span v-if="hover3 && this.$store.state.myMoves.thirdMove.critical">({{this.$store.state.myMoves.thirdMove.criticalChance}}% to do x2)</span>
-     </button>
-     <button :class="this.$store.state.myMoves.fourthMove.type" v-on:mouseover="hover4 = true" v-on:mouseleave="hover4 = false"
-     v-on:click="setDisplay(this.$store.state.myMoves.fourthMove.power, this.$store.state.myMoves.fourthMove.boost, this.$store.state.myMoves.fourthMove.healing, 
-     this.$store.state.myMoves.fourthMove.criticalChance, this.$store.state.myMoves.fourthMove.name)">
-       <div>{{this.$store.state.myMoves.fourthMove.name}}</div>
-       <span v-if="hover4 && this.$store.state.myMoves.fourthMove.power > 0">Damage: {{this.$store.state.myMoves.fourthMove.power}}
-       <span v-if="this.$store.state.myPokemon.currentBoost.boost > 0">(+{{this.$store.state.myPokemon.currentBoost.boost}} boost)</span></span>
-       <span v-if="hover4 && this.$store.state.myMoves.fourthMove.boost > 0">Boost: +{{this.$store.state.myMoves.fourthMove.boost}} Damage</span>
-       <span v-if="hover4 && this.$store.state.myMoves.fourthMove.healing > 0">Healing: +{{this.$store.state.myMoves.fourthMove.healing}}</span>
-       <span v-if="hover4 && this.$store.state.myMoves.fourthMove.critical">({{this.$store.state.myMoves.fourthMove.criticalChance}}% to do x2)</span>
-     </button>
   </div>
 </template>
 
 <script>
+import store from '../store/index.js';
+
 export default {
   data() {
     return {
-      hover1: false,
-      hover2: false,
-      hover3: false,
-      hover4: false,
-    };
+      myMoves: [...store.state.myMoves.moves],
+      enemyMoves: [...store.state.enemyMoves.moves],
+      hover: false
+    }
   },
   methods: {
     setDisplay(value, boost, heal, criticalChance, name) {
       var moveSet = document.querySelector(".moveSet");
       moveSet.style.visibility = "hidden";
-      this.$store.state.turn.who = "TURN: IT IS THE ENEMY TURN"
-      this.$store.state.display.currentMove = "You used " + name
-      this.$store.state.display.onScreen = ""
+      store.state.turn.who = "TURN: IT IS THE ENEMY TURN"
+      store.state.display.currentMove = "You used " + name
+      store.state.display.onScreen = ""
       var crit = Math.floor(Math.random() * 100)
       crit += 1
-      console.log(crit + " " + criticalChance)
       if(value > 0) {
         if(criticalChance > 0) {
           if(crit <= criticalChance) {
             value = value * 2
-            this.$store.state.display.currentMove += " (CRITICAL HIT)"
+            store.state.display.currentMove += " (CRITICAL HIT)"
           }
         }
-        this.$store.state.display.onScreen += " and did " + value + " damage"
+        store.state.display.onScreen += " and did " + value + " damage"
       }
       if(boost > 0) {
-        this.$store.state.display.onScreen += " and boosted your damage by " + boost
-        this.$store.commit('statBoost', boost)
+        store.state.display.onScreen += " and boosted your damage by " + boost
+        store.commit('statBoost', boost)
       }
       if(heal > 0) {
-        const dmg = this.$store.state.myPokemon.firstOne.health - this.$store.state.myPokemon.firstOne.currentHealth
+        const dmg = store.state.myPokemon.firstOne.health - store.state.myPokemon.firstOne.currentHealth
         if(dmg >= heal) {
-          this.$store.state.display.onScreen += " and healed " + heal + " health"
-          this.$store.state.myPokemon.firstOne.currentHealth += heal
+          store.state.display.onScreen += " and healed " + heal + " health"
+          store.state.myPokemon.firstOne.currentHealth += heal
         }
         else {
-          this.$store.state.display.onScreen = "and healed " + dmg + " health"
-          this.$store.state.myPokemon.firstOne.currentHealth += dmg
+          store.state.display.onScreen = "and healed " + dmg + " health"
+          store.state.myPokemon.firstOne.currentHealth += dmg
         }
       }
 
-      if(this.$store.state.enemyPokemon.firstOne.currentHealth > 0) {
-        this.$store.state.enemyPokemon.firstOne.currentHealth -= value
+
+      if(store.state.myPokemon.firstOne.currentHealth > (store.state.myPokemon.firstOne.health * 0.5)) {
+        var healthOver = document.querySelector(".game .myHealth");
+        healthOver.style.backgroundColor = "rgb(60, 188, 60)";
       }
-      if(this.$store.state.enemyPokemon.firstOne.currentHealth <= 0) {
+      
+      if(store.state.enemyPokemon.firstOne.currentHealth > 0) {
+        store.state.enemyPokemon.firstOne.currentHealth -= value
+        if(store.state.enemyPokemon.firstOne.currentHealth <= (store.state.enemyPokemon.firstOne.health * 0.5) && store.state.enemyPokemon.firstOne.currentHealth > 0) {
+          var healthHalf = document.querySelector(".game .enemyHealth");
+          healthHalf.style.backgroundColor = "yellow";
+        }
+      }
+      if(store.state.enemyPokemon.firstOne.currentHealth <= 0) {
         var healthDepleted = document.querySelector(".game .enemyHealth");
         healthDepleted.style.backgroundColor = "red";
         setTimeout(() => {
-            this.$store.state.display.currentMove = this.$store.state.enemyPokemon.firstOne.name;
-            this.$store.state.display.onScreen = " died!"
+            store.state.display.currentMove = store.state.enemyPokemon.firstOne.name;
+            store.state.display.onScreen = " died!"
           }, 3000)
         setTimeout(() => {
           this.$router.push('/victory')
@@ -129,39 +110,56 @@ export default {
       }
       const pick = Math.floor(Math.random() * 4);
       setTimeout(() => {
-        if(this.$store.state.enemyMoves.firstMove.id == pick) {
-          this.$store.state.enemyPokemon.currentMove = this.$store.state.enemyMoves.firstMove
-        }
-        else if(this.$store.state.enemyMoves.secondMove.id == pick) {
-          this.$store.state.enemyPokemon.currentMove = this.$store.state.enemyMoves.secondMove
-        }
-        else if(this.$store.state.enemyMoves.thirdMove.id == pick) {
-          this.$store.state.enemyPokemon.currentMove = this.$store.state.enemyMoves.thirdMove
-        }
-        else if(this.$store.state.enemyMoves.fourthMove.id == pick) {
-          this.$store.state.enemyPokemon.currentMove = this.$store.state.enemyMoves.fourthMove
-        }
+          for(let i = 0; i < store.state.enemyMoves.moves.length; i++) {
+            if(store.state.enemyMoves.moves[i].id == pick) {
+              store.state.enemyPokemon.currentMove = store.state.enemyMoves.moves[i]
+            }
+          }
+        
+        name = store.state.enemyPokemon.currentMove.name
+        value = store.state.enemyPokemon.currentMove.power
+        heal = store.state.enemyPokemon.currentMove.healing
 
-        name = this.$store.state.enemyPokemon.currentMove.name
-        value = this.$store.state.enemyPokemon.currentMove.power
-
-        this.$store.state.display.currentMove = "The enemy used " + name;
-        if(value > 0)
-          this.$store.state.display.onScreen = " and did " + value + " damage"
+        store.state.display.currentMove = "The enemy used " + name;
+        if(value > 0) {
+          store.state.display.onScreen = " and did " + value + " damage"
+        }
         else {
-          this.$store.state.display.onScreen = "status"
+          store.state.display.onScreen = "status"
         }
 
-        if(this.$store.state.myPokemon.firstOne.currentHealth > 0) {
-          this.$store.state.myPokemon.firstOne.currentHealth -= value
+        if(heal > 0) {
+          const dmg = store.state.enemyPokemon.firstOne.health - store.state.enemyPokemon.firstOne.currentHealth
+          if(dmg >= heal) {
+            store.state.display.onScreen += " and healed " + heal + " health"
+            store.state.enemyPokemon.firstOne.currentHealth += heal
+          }
+          else {
+            store.state.display.onScreen = "and healed " + dmg + " health"
+            store.state.enemyPokemon.firstOne.currentHealth += dmg
+          }
         }
 
-        if(this.$store.state.myPokemon.firstOne.currentHealth <= 0) {
+
+        if(store.state.enemyPokemon.firstOne.currentHealth > (store.state.enemyPokemon.firstOne.health * 0.5)) {
+          var healthOver = document.querySelector(".game .enemyHealth");
+           healthOver.style.backgroundColor = "rgb(60, 188, 60)";
+        }
+
+        if(store.state.myPokemon.firstOne.currentHealth > 0) {
+          store.state.myPokemon.firstOne.currentHealth -= value
+          if(store.state.myPokemon.firstOne.currentHealth <= (store.state.myPokemon.firstOne.health * 0.5) && store.state.myPokemon.firstOne.currentHealth > 0) {
+           var healthHalf = document.querySelector(".game .myHealth");
+           healthHalf.style.backgroundColor = "yellow";
+          }
+        }
+
+        if(store.state.myPokemon.firstOne.currentHealth <= 0) {
           var healthDepleted = document.querySelector(".game .myHealth");
           healthDepleted.style.backgroundColor = "red";
           setTimeout(() => {
-            this.$store.state.display.currentMove = this.$store.state.myPokemon.firstOne.name;
-            this.$store.state.display.onScreen = " died!"
+            store.state.display.currentMove = store.state.myPokemon.firstOne.name;
+            store.state.display.onScreen = " died!"
           }, 3000)
 
           setTimeout(() => {
@@ -171,31 +169,27 @@ export default {
       
       }
       
-      this.$store.state.turn.who = "TURN: IT IS YOUR TURN";
+      store.state.turn.who = "TURN: IT IS YOUR TURN";
       moveSet.style.visibility = "visible";
-      }, 4000)
+      }, 3000)
     },
-    moveCount() {
-      return this.$store.state.items.counter
-    },
-
-    getColor(){
-      return this.$store.state.myMoves.firstMove.type.name
-    },
-
-    incrementCat() {
-      this.$store.commit('incrementCount')
-    }
   }
   
 }
 </script>
 
 <style>
+ .boostBar {
+    position: absolute;
+    background-color: rgb(174, 4, 174);
+    text-align: end;
+    font-size: 15px;
+    padding: 1px;
+    border: 1px solid black;
+  }
   .detail {
     display: flex; 
     flex-direction: row;
-    justify-content: space-evenly;
   }
 
   .detail div {
@@ -254,7 +248,6 @@ export default {
   }
 
   .desc span {
-    color: black;
     opacity: 50%;
   }
 

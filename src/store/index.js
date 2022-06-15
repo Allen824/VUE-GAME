@@ -24,104 +24,104 @@ export default createStore({
       },
       currentMove: null
     },
-    items: {
-      counter: 0,
-    },
     enemyMoves: {
-      firstMove: {
-        name: 'Chop',
-        type: 'D',
-        power: 15,
-        id: 0
-      },
-      secondMove: {
-        name: 'Mind Wave',
-        type: 'D',
-        power: 35,
-        id: 1
-      },
-      thirdMove: {
-        name: 'Lightning Roll',
-        type: 'D',
-        power: 20,
-        id: 2
-      },
-      fourthMove: {
-        name: 'Water Spear',
-        type: 'D',
-        power: 30,
-        id: 3
-      } 
-
+      moves: [
+        {
+          name: 'Healing Mist',
+          type: 'H',
+          power: 0,
+          boost: 0,
+          healing: 25,
+          criticalChance: 0,
+          id: 0
+        },
+        {
+          name: 'Mind Wave',
+          type: 'D',
+          power: 35,
+          boost: 0,
+          healing: 0,
+          criticalChance: 0,
+          id: 1
+        },
+        {
+          name: 'Lightning Roll',
+          type: 'D',
+          power: 20,
+          boost: 0, 
+          healing: 0,
+          criticalChance: 0,
+          id: 2
+        },
+        {
+          name: 'Water Spear',
+          type: 'D',
+          power: 30,
+          boost: 0,
+          healing: 0,
+          criticalChance: 0,
+          id: 3
+        } 
+      ] 
     },
     myMoves: {
-      firstMove: {
-        name: 'Galaxy Blast',
-        type: 'D',
-        power: 20,
-        boost: 0,
-        healing: 0,
-        critical: false,
-        criticalChance: 0
-      },
-      secondMove: {
-        name: 'Rock Hurl',
-        type: 'D',
-        power: 15,
-        boost: 0,
-        healing: 0,
-        critical: true,
-        criticalChance: 50
-      },
-      thirdMove: {
-        name: 'Power Up',
-        type: 'B',
-        power: 0,
-        boost: 5,
-        healing: 0,
-        critical: false,
-        criticalChance: 0
-      },
-      fourthMove: {
-        name: 'Healing Pulse',
-        type: 'H',
-        power: 0,
-        boost: 0,
-        healing: 40,
-        critical: false,
-        criticalChance: 0
-      }
-      
+      moves: [
+        {
+          name: 'Heat Blast',
+          type: 'D',
+          power: 20,
+          boost: 0,
+          healing: 0,
+          criticalChance: 0,
+          id: 1
+        },
+        {
+          name: 'Rock Hurl',
+          type: 'D',
+          power: 15,
+          boost: 0,
+          healing: 0,
+          criticalChance: 50,
+          id: 2
+        },
+        {
+          name: 'Power Up',
+          type: 'B',
+          power: 0,
+          boost: 5,
+          healing: 0,
+          criticalChance: 0,
+          id: 3
+        },
+        {
+          name: 'Healing Pulse',
+          type: 'H',
+          power: 0,
+          boost: 0,
+          healing: 40,
+          criticalChance: 0,
+          id: 4
+        }
+      ]
     },
     display: {
       currentMove: "",
-      onScreen: ""
+      onScreen: "",
+      battleLog: ""
     }
   },
   getters: {
   },
   mutations: {
-    incrementCount: state => {
-      state.items.counter++;
-    },
-
     statBoost: (state, boost) => {
-      
-      if(state.myMoves.firstMove.power > 0) {
-        state.myMoves.firstMove.power += boost;
-      }
-      if(state.myMoves.secondMove.power > 0) {
-        state.myMoves.secondMove.power += boost;
-      }
-      if(state.myMoves.thirdMove.power > 0) {
-        state.myMoves.thirdMove.power += boost;
-      }
-      if(state.myMoves.fourthMove.power > 0) {
-        state.myMoves.fourthMove.power += boost;
-      }
-
+      for(let i = 0; i < state.myMoves.moves.length; i++) {
+        if(state.myMoves.moves[i].power > 0) {  
+          state.myMoves.moves[i].power += boost
+        }
+      } 
       state.myPokemon.currentBoost.boost += boost
-    }
+    } 
+    
   },
   actions: {
   },

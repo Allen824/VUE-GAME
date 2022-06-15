@@ -9,32 +9,32 @@ import BattleInfoView from '../views/BattleInfo.vue'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView
   },
   {
     path: '/battle',
-    name: 'battle',
+    name: 'Battle',
     component: BattleView,
   },
   {
     path: '/victory',
-    name: 'victory',
+    name: 'Victory',
     component: VictoryView
   },
   {
     path: '/defeat',
-    name: 'defeat',
+    name: 'Defeat',
     component: DefeatView
   },
   {
     path: '/MoveInfo',
-    name: 'moveInfo',
+    name: 'MoveInfo',
     component: MoveInfoView
   },
   {
     path: '/BattleInfo',
-    name: 'battleInfo',
+    name: 'BattleInfo',
     component: BattleInfoView
   }
 ]
