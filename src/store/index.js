@@ -7,20 +7,22 @@ export default createStore({
     },
     myPokemon: {
       currentBoost: {
-        boost: 0
+        boost: 0,
       },
 
       firstOne: {
         name: 'You',
         health: 100,
-        currentHealth: 100  
+        currentHealth: 100 ,
+        healthColor: 'rgb(60, 188, 60)' 
       }
     },
     enemyPokemon: {
       firstOne: {
         name: 'The enemy',
         health: 100,
-        currentHealth: 100  
+        currentHealth: 100,  
+        healthColor: 'rgb(60, 188, 60)'
       },
       currentMove: null
     },
@@ -98,7 +100,7 @@ export default createStore({
           type: 'H',
           power: 0,
           boost: 0,
-          healing: 40,
+          healing: 30,
           criticalChance: 0,
           id: 4
         }
@@ -107,7 +109,8 @@ export default createStore({
     display: {
       currentMove: "",
       onScreen: "",
-      battleLog: ""
+      battleLog: [],
+      entry: 0
     }
   },
   getters: {

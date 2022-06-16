@@ -5,6 +5,7 @@ import VictoryView from '../views/VictoryView.vue'
 import DefeatView from '../views/DefeatView.vue'
 import MoveInfoView from '../views/MoveInfo.vue'
 import BattleInfoView from '../views/BattleInfo.vue'
+import BattleLogView from '../views/BattleLog.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/BattleInfo',
     name: 'BattleInfo',
     component: BattleInfoView
+  },
+  {
+    path: '/BattleLog',
+    name: 'BattleLog',
+    component: BattleLogView
   }
 ]
 

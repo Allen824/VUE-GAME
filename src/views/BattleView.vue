@@ -5,13 +5,13 @@
     </div>
     <div class="enemy">
       <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/241.png">
-      <div class="enemyHealth">
+      <div class="enemyHealth" :style="{background: this.$store.state.enemyPokemon.firstOne.healthColor}">
         <span v-if="this.$store.state.enemyPokemon.firstOne.currentHealth > 0">{{this.$store.state.enemyPokemon.firstOne.currentHealth}} / {{this.$store.state.enemyPokemon.firstOne.health}} Health</span>
         <span v-if="this.$store.state.enemyPokemon.firstOne.currentHealth <= 0">DEAD</span>
       </div>
     </div>
     <div class="you">
-      <div class="myHealth">
+      <div class="myHealth" :style="{background: this.$store.state.myPokemon.firstOne.healthColor}">
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth > 0">{{this.$store.state.myPokemon.firstOne.currentHealth}} / {{this.$store.state.myPokemon.firstOne.health}} Health</span>
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth <= 0">DEAD</span>
       </div>
@@ -22,7 +22,7 @@
   <div class="desc" Id="desc">
     <span v-if="this.$store.state.display.currentMove == ''">Battle Log...</span>
     <div>{{this.$store.state.display.currentMove}} {{this.$store.state.display.onScreen}}</div>
-    <!--<button class="battleLog" v-on:click="this.$router.push('/BattleLog')"> View Full Battle Log</button>-->
+    <button class="battleLog" v-on:click="this.$router.push('/BattleLog')"> View Full Battle Log</button>
   </div> 
 
   <div class="moveSet">
@@ -83,22 +83,20 @@ export default {
         }
       }
 
+      store.state.display.battleLog[store.state.display.entry++] = store.state.display.currentMove + store.state.display.onScreen
 
       if(store.state.myPokemon.firstOne.currentHealth > (store.state.myPokemon.firstOne.health * 0.5)) {
-        var healthOver = document.querySelector(".game .myHealth");
-        healthOver.style.backgroundColor = "rgb(60, 188, 60)";
+        store.state.myPokemon.firstOne.healthColor = 'rgb(60, 188, 60)'
       }
       
       if(store.state.enemyPokemon.firstOne.currentHealth > 0) {
         store.state.enemyPokemon.firstOne.currentHealth -= value
         if(store.state.enemyPokemon.firstOne.currentHealth <= (store.state.enemyPokemon.firstOne.health * 0.5) && store.state.enemyPokemon.firstOne.currentHealth > 0) {
-          var healthHalf = document.querySelector(".game .enemyHealth");
-          healthHalf.style.backgroundColor = "yellow";
+          store.state.enemyPokemon.firstOne.healthColor = 'yellow'
         }
       }
       if(store.state.enemyPokemon.firstOne.currentHealth <= 0) {
-        var healthDepleted = document.querySelector(".game .enemyHealth");
-        healthDepleted.style.backgroundColor = "red";
+        store.state.enemyPokemon.firstOne.healthColor = 'red'
         setTimeout(() => {
             store.state.display.currentMove = store.state.enemyPokemon.firstOne.name;
             store.state.display.onScreen = " died!"
@@ -119,13 +117,11 @@ export default {
         name = store.state.enemyPokemon.currentMove.name
         value = store.state.enemyPokemon.currentMove.power
         heal = store.state.enemyPokemon.currentMove.healing
-
+        store.state.display.onScreen = ""
+        
         store.state.display.currentMove = "The enemy used " + name;
         if(value > 0) {
           store.state.display.onScreen = " and did " + value + " damage"
-        }
-        else {
-          store.state.display.onScreen = "status"
         }
 
         if(heal > 0) {
@@ -135,28 +131,27 @@ export default {
             store.state.enemyPokemon.firstOne.currentHealth += heal
           }
           else {
-            store.state.display.onScreen = "and healed " + dmg + " health"
+            store.state.display.onScreen = " and healed " + dmg + " health"
             store.state.enemyPokemon.firstOne.currentHealth += dmg
           }
         }
 
+        store.state.display.battleLog[store.state.display.entry++] = store.state.display.currentMove + store.state.display.onScreen
 
         if(store.state.enemyPokemon.firstOne.currentHealth > (store.state.enemyPokemon.firstOne.health * 0.5)) {
-          var healthOver = document.querySelector(".game .enemyHealth");
-           healthOver.style.backgroundColor = "rgb(60, 188, 60)";
+          store.state.enemyPokemon.firstOne.healthColor = 'rgb(60, 188, 60)'
         }
 
         if(store.state.myPokemon.firstOne.currentHealth > 0) {
           store.state.myPokemon.firstOne.currentHealth -= value
           if(store.state.myPokemon.firstOne.currentHealth <= (store.state.myPokemon.firstOne.health * 0.5) && store.state.myPokemon.firstOne.currentHealth > 0) {
-           var healthHalf = document.querySelector(".game .myHealth");
-           healthHalf.style.backgroundColor = "yellow";
+           store.state.myPokemon.firstOne.healthColor = 'yellow'
+           
           }
         }
 
         if(store.state.myPokemon.firstOne.currentHealth <= 0) {
-          var healthDepleted = document.querySelector(".game .myHealth");
-          healthDepleted.style.backgroundColor = "red";
+          store.state.myPokemon.firstOne.healthColor = 'red'
           setTimeout(() => {
             store.state.display.currentMove = store.state.myPokemon.firstOne.name;
             store.state.display.onScreen = " died!"
@@ -179,6 +174,14 @@ export default {
 </script>
 
 <style>
+  .battleLog {
+    background-color: rgb(196, 196, 196);
+  }
+
+  .battleLog:hover {
+    background-color: rgb(146, 145, 145);
+  }
+
  .boostBar {
     position: absolute;
     background-color: rgb(174, 4, 174);
@@ -215,15 +218,13 @@ export default {
     text-align: center;
   }
 
-  .game .myHealth  {
-    background-color: rgb(60, 188, 60);
+  .game .myHealth  { 
     border: 2px solid black;
     height: 20%;
     width: 20%;
   }
 
   .game .enemyHealth {
-    background-color: rgb(60, 188, 60);
     border: 2px solid black;
     height: 20%;
     width: 20%;
