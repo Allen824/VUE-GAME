@@ -4,7 +4,7 @@
       <div class="whosTurn">{{this.$store.state.turn.who}}</div>
     </div>
     <div class="enemy">
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/241.png">
+      <div><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/241.png"></div>
       <div class="enemyHealth" :style="{background: this.$store.state.enemyPokemon.firstOne.healthColor}">
         <span v-if="this.$store.state.enemyPokemon.firstOne.currentHealth > 0">{{this.$store.state.enemyPokemon.firstOne.currentHealth}} / {{this.$store.state.enemyPokemon.firstOne.health}} Health</span>
         <span v-if="this.$store.state.enemyPokemon.firstOne.currentHealth <= 0">DEAD</span>
@@ -15,7 +15,8 @@
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth > 0">{{this.$store.state.myPokemon.firstOne.currentHealth}} / {{this.$store.state.myPokemon.firstOne.health}} Health</span>
         <span v-if="this.$store.state.myPokemon.firstOne.currentHealth <= 0">DEAD</span>
       </div>
-      <div><span class="boostBar" v-show="this.$store.state.myPokemon.currentBoost.boost > 0">+{{this.$store.state.myPokemon.currentBoost.boost}} Damage</span><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/241.png"></div>
+      <div><span class="boostBar" v-show="this.$store.state.myPokemon.currentBoost.boost > 0">+{{this.$store.state.myPokemon.currentBoost.boost}} Damage</span>
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/241.png"></div>
     </div>
 
   </div>
@@ -51,6 +52,8 @@ export default {
   },
   methods: {
     setDisplay(value, boost, heal, criticalChance, name) {
+
+      //Your Move
       var moveSet = document.querySelector(".moveSet");
       moveSet.style.visibility = "hidden";
       store.state.turn.who = "TURN: IT IS THE ENEMY TURN"
@@ -106,6 +109,8 @@ export default {
         }, 5000)
          return 
       }
+
+      // Enemy Move
       const pick = Math.floor(Math.random() * 4);
       setTimeout(() => {
           for(let i = 0; i < store.state.enemyMoves.moves.length; i++) {
@@ -116,12 +121,26 @@ export default {
         
         name = store.state.enemyPokemon.currentMove.name
         value = store.state.enemyPokemon.currentMove.power
+        boost = store.state.enemyPokemon.currentMove.boost
         heal = store.state.enemyPokemon.currentMove.healing
+        criticalChance = store.state.enemyPokemon.currentMove.criticalChance
         store.state.display.onScreen = ""
         
         store.state.display.currentMove = "The enemy used " + name;
         if(value > 0) {
+          if(criticalChance > 0) {
+            if(crit <= criticalChance) {
+              value = value * 2
+              store.state.display.currentMove += " (CRITICAL HIT)"
+            }
+          }var crit = Math.floor(Math.random() * 100)
+      crit += 1
           store.state.display.onScreen = " and did " + value + " damage"
+        }
+
+        if(boost > 0) {
+          store.state.display.onScreen += " and boosted their damage by " + boost
+          store.commit('statBoost', boost)
         }
 
         if(heal > 0) {

@@ -19,7 +19,7 @@ export default createStore({
     },
     enemyPokemon: {
       firstOne: {
-        name: 'The enemy',
+        name: 'The Enemy',
         health: 100,
         currentHealth: 100,  
         healthColor: 'rgb(60, 188, 60)'
@@ -40,7 +40,7 @@ export default createStore({
         {
           name: 'Mind Wave',
           type: 'D',
-          power: 35,
+          power: 30,
           boost: 0,
           healing: 0,
           criticalChance: 0,
@@ -52,16 +52,16 @@ export default createStore({
           power: 20,
           boost: 0, 
           healing: 0,
-          criticalChance: 0,
+          criticalChance: 30,
           id: 2
         },
         {
           name: 'Water Spear',
           type: 'D',
-          power: 30,
+          power: 25,
           boost: 0,
           healing: 0,
-          criticalChance: 0,
+          criticalChance: 15,
           id: 3
         } 
       ] 
@@ -71,7 +71,7 @@ export default createStore({
         {
           name: 'Heat Blast',
           type: 'D',
-          power: 20,
+          power: 25,
           boost: 0,
           healing: 0,
           criticalChance: 0,
@@ -80,10 +80,10 @@ export default createStore({
         {
           name: 'Rock Hurl',
           type: 'D',
-          power: 15,
+          power: 20,
           boost: 0,
           healing: 0,
-          criticalChance: 50,
+          criticalChance: 35,
           id: 2
         },
         {
